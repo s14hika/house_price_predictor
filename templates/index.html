@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>House Price Prediction</title>
+</head>
+<body style="text-align: center; font-family: Arial;">
+    <h2>🏠 House Price Predictor</h2>
+    <form action="/predict" method="post">
+        <label>Overall Quality:</label><br>
+        <input type="number" name="OverallQual" required><br><br>
+
+        <label>GrLivArea (sq ft):</label><br>
+        <input type="number" name="GrLivArea" required><br><br>
+
+        <label>GarageCars:</label><br>
+        <input type="number" name="GarageCars" required><br><br>
+
+        <label>1st Floor SF:</label><br>
+        <input type="number" name="1stFlrSF" required><br><br>
+
+        <label>Total Rooms Above Ground:</label><br>
+        <input type="number" name="TotRmsAbvGrd" required><br><br>
+
+        <input type="submit" value="Predict Price">
+    </form>
+
+    <h3>{{ prediction_text }}</h3>
+</body>
+</html>
