@@ -340,12 +340,6 @@
                     <p id="confidenceText">Model Confidence: High (R² = 0.91)</p>
                 </div>
                 
-                {% if prediction_text %}
-                    <div id="resultBox" class="result-box show" style="display: block;">
-                        <h3>Prediction Result</h3>
-                        <div class="result-price">{{ prediction_text }}</div>
-                    </div>
-                {% endif %}
                 
                 <div class="footer">
                     <p><i class="fas fa-cubes"></i> Powered by XGBoost ML | <i class="fas fa-database"></i> Ames Housing Dataset</p>
@@ -359,6 +353,8 @@
     <script>
         // Form validation and enhancement
         document.getElementById('predictionForm').addEventListener('submit', function(e) {
+              e.preventDefault();
+            
             const inputs = document.querySelectorAll('input[type="number"]');
             let isValid = true;
             
@@ -376,6 +372,31 @@
                 alert('Please fill all fields with valid values (greater than 0)');
             }
         });
+          // Send AJAX request to /api/predict
+  const formData = new FormData();
+  inputs.forEach(input => {
+    formData.append(input.name, input.value);
+  });
+  
+  fetch('/api/predict', {
+    method: 'POST',
+    body: formData
+  })
+  .then(response => response.json())
+  .then(data => {
+    if (data.success) {
+      document.getElementById('priceValue').textContent = data.predicted_price.toLocaleString();
+      document.getElementById('resultBox').classList.add('show');
+      document.getElementById('resultBox').style.display = 'block';
+    } else {
+      alert('Error: ' + data.error);
+    }
+  })
+  .catch(error => {
+    console.error('Error:', error);
+    alert('Prediction failed. Please try again.');
+  });
+
         
         // Real-time input validation
         document.querySelectorAll('input[type="number"]').forEach(input => {
